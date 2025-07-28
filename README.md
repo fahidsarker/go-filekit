@@ -112,6 +112,47 @@ script/
   script.sh
 ```
 
+#### 4. deep-compare
+
+Compares two directories recursively to validate if they have the same structure and files. The comparison checks file names, directory structure, and modification times.
+
+```bash
+tools deep-compare [-verbose] <directory1> <directory2>
+```
+
+**Flags:**
+- `-verbose`: Show detailed comparison results including specific differences (optional)
+
+**Arguments:**
+- `directory1`: First directory to compare (required)
+- `directory2`: Second directory to compare (required)
+
+**Examples:**
+```bash
+# Compare two directories with basic output
+tools deep-compare /path/to/dir1 /path/to/dir2
+
+# Compare with detailed differences shown
+tools deep-compare -verbose /backup/folder /current/folder
+
+# Compare current directory with another directory
+tools deep-compare . /backup/current-dir
+```
+
+**deep-compare behavior:**
+- ✅ **Identical**: Both directories have the same structure, files, and modification times
+- ❌ **Different**: Shows summary of differences:
+  - Files/directories only in first directory
+  - Files/directories only in second directory  
+  - Files with different modification times
+  - Type mismatches (file vs directory with same name)
+
+**Use cases:**
+- Verify backup integrity
+- Check if directories are synchronized
+- Validate file migration results
+- Compare before/after states
+
 ## Project Structure
 
 ```
@@ -120,14 +161,17 @@ filekit/
 ├── cmd/                       # Command handlers
 │   ├── replace_in_names.go   # rename-replace command handler
 │   ├── create_rand_files.go  # create-rand-files command handler
-│   └── folderify.go          # folderify command handler
+│   ├── folderify.go          # folderify command handler
+│   └── deep_compare.go       # deep-compare command handler
 ├── internal/                  # Internal packages (implementation logic)
 │   ├── rename/               # File renaming logic
 │   │   └── rename.go
 │   ├── generator/            # Random file generation logic
 │   │   └── generator.go
-│   └── folderify/           # Folderify logic
-│       └── folderify.go
+│   ├── folderify/           # Folderify logic
+│   │   └── folderify.go
+│   └── compare/             # Directory comparison logic
+│       └── compare.go
 ├── go.mod                    # Go module definition
 └── README.md                # This file
 ```

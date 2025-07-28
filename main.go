@@ -23,6 +23,8 @@ func main() {
 		cmd.ExecuteCreateRandFiles(args)
 	case "folderify":
 		cmd.ExecuteFolderify(args)
+	case "deep-compare":
+		cmd.ExecuteDeepCompare(args)
 	default:
 		fmt.Printf("Unknown command: %s\n", command)
 		printUsage()
@@ -43,4 +45,8 @@ func printUsage() {
 	fmt.Println("  folderify [-recursive] [directory]")
 	fmt.Println("    Creates folders with file names (minus extension) and moves files into them")
 	fmt.Println("    Use -recursive to process subdirectories")
+	fmt.Println("")
+	fmt.Println("  deep-compare [-verbose] <directory1> <directory2>")
+	fmt.Println("    Compares two directories recursively by structure, file names, and modification times")
+	fmt.Println("    Use -verbose for detailed comparison results")
 }
