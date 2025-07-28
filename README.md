@@ -1,16 +1,29 @@
 # Filekit
 
-A collection of useful command-line tools written in Go for file manipulation and management.
+A collection of useful command-line filekit written in Go for file manipulation and management.
 
 ## Installation
 
+### Download Pre-built Binaries (Recommended)
+
+Download the latest release for your operating system from the [GitHub Releases](https://github.com/fahidsarker/go-filekit/releases) page. Pre-built binaries are available for:
+- Linux (x86_64, ARM64)
+- macOS (x86_64, ARM64)  
+- Windows (x86_64, ARM64)
+
+After downloading, extract the binary and optionally add it to your PATH.
+
+### Build from Source
+
+If you prefer to build from source:
+
 ```bash
-go build -o tools .
+go build -o filekit .
 ```
 
 ## Usage
 
-The tools are executed using the format: `tools <cmd> <flags> [directory]`
+The filekit are executed using the format: `filekit <cmd> <flags> [directory]`
 
 ### Available Commands
 
@@ -19,7 +32,7 @@ The tools are executed using the format: `tools <cmd> <flags> [directory]`
 Renames all files in a directory by replacing a target string with a replacement string.
 
 ```bash
-tools rename-replace -target="old_string" [-replaceWith="new_string"] [directory]
+filekit rename-replace -target="old_string" [-replaceWith="new_string"] [directory]
 ```
 
 **Flags:**
@@ -32,13 +45,13 @@ tools rename-replace -target="old_string" [-replaceWith="new_string"] [directory
 **Examples:**
 ```bash
 # Replace "test" with "prod" in all filenames in current directory
-tools rename-replace -target="test" -replaceWith="prod"
+filekit rename-replace -target="test" -replaceWith="prod"
 
 # Remove "backup_" prefix from all files in /path/to/files (replaceWith omitted)
-tools rename-replace -target="backup_" /path/to/files
+filekit rename-replace -target="backup_" /path/to/files
 
 # Explicitly remove "temp_" prefix using empty string
-tools rename-replace -target="temp_" -replaceWith=""
+filekit rename-replace -target="temp_" -replaceWith=""
 ```
 
 #### 2. create-rand-files
@@ -46,7 +59,7 @@ tools rename-replace -target="temp_" -replaceWith=""
 Creates random text files with random names at a specified directory depth.
 
 ```bash
-tools create-rand-files -depth=<number> -count=<number> [directory]
+filekit create-rand-files -depth=<number> -count=<number> [directory]
 ```
 
 **Flags:**
@@ -59,10 +72,10 @@ tools create-rand-files -depth=<number> -count=<number> [directory]
 **Examples:**
 ```bash
 # Create 10 random files in current directory
-tools create-rand-files -depth=1 -count=10
+filekit create-rand-files -depth=1 -count=10
 
 # Create 5 random files in nested directories under /tmp
-tools create-rand-files -depth=3 -count=5 /tmp
+filekit create-rand-files -depth=3 -count=5 /tmp
 ```
 
 #### 3. folderify
@@ -70,7 +83,7 @@ tools create-rand-files -depth=3 -count=5 /tmp
 Takes files and creates folders with the same name (minus extension), then moves each file into its corresponding folder.
 
 ```bash
-tools folderify [-recursive] [directory]
+filekit folderify [-recursive] [directory]
 ```
 
 **Flags:**
@@ -82,16 +95,16 @@ tools folderify [-recursive] [directory]
 **Examples:**
 ```bash
 # Folderify files in current directory only
-tools folderify
+filekit folderify
 
 # Folderify files recursively in all subdirectories
-tools folderify -recursive
+filekit folderify -recursive
 
 # Folderify files in specific directory
-tools folderify /path/to/files
+filekit folderify /path/to/files
 
 # Folderify files recursively in specific directory
-tools folderify -recursive /path/to/files
+filekit folderify -recursive /path/to/files
 ```
 
 **Example of folderify behavior:**
@@ -117,7 +130,7 @@ script/
 Compares two directories recursively to validate if they have the same structure and files. The comparison checks file names, directory structure, and modification times.
 
 ```bash
-tools deep-compare [-verbose] <directory1> <directory2>
+filekit deep-compare [-verbose] <directory1> <directory2>
 ```
 
 **Flags:**
@@ -130,13 +143,13 @@ tools deep-compare [-verbose] <directory1> <directory2>
 **Examples:**
 ```bash
 # Compare two directories with basic output
-tools deep-compare /path/to/dir1 /path/to/dir2
+filekit deep-compare /path/to/dir1 /path/to/dir2
 
 # Compare with detailed differences shown
-tools deep-compare -verbose /backup/folder /current/folder
+filekit deep-compare -verbose /backup/folder /current/folder
 
 # Compare current directory with another directory
-tools deep-compare . /backup/current-dir
+filekit deep-compare . /backup/current-dir
 ```
 
 **deep-compare behavior:**
