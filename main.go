@@ -25,6 +25,10 @@ func main() {
 		cmd.ExecuteFolderify(args)
 	case "deep-compare":
 		cmd.ExecuteDeepCompare(args)
+	case "unrar":
+		cmd.ExecuteUnrar(args)
+	case "remove-files":
+		cmd.ExecuteRemoveFiles(args)
 	default:
 		fmt.Printf("Unknown command: %s\n", command)
 		printUsage()
@@ -49,4 +53,12 @@ func printUsage() {
 	fmt.Println("  deep-compare [-verbose] <directory1> <directory2>")
 	fmt.Println("    Compares two directories recursively by structure, file names, and modification times")
 	fmt.Println("    Use -verbose for detailed comparison results")
+	fmt.Println("")
+	fmt.Println("  unrar <rar_file_or_directory> [-r]")
+	fmt.Println("    Extracts RAR files to their containing directories")
+	fmt.Println("    Use -r for recursive processing when target is a directory")
+	fmt.Println("")
+	fmt.Println("  remove-files <directory> -pattern=\"*.ext\" [-recursive]")
+	fmt.Println("    Removes files matching the specified pattern")
+	fmt.Println("    Shows confirmation before deletion. Use -recursive to process subdirectories")
 }

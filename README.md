@@ -166,6 +166,105 @@ filekit deep-compare . /backup/current-dir
 - Validate file migration results
 - Compare before/after states
 
+#### 5. unrar
+
+Extracts RAR files to their containing directories. Can process a single RAR file or recursively process all RAR files in a directory.
+
+```bash
+filekit unrar <rar_file_or_directory> [-r]
+```
+
+**Flags:**
+- `-r`: Process directories recursively (only applicable when target is a directory)
+
+**Arguments:**
+- `rar_file_or_directory`: Path to a RAR file or directory containing RAR files (required)
+
+**Examples:**
+```bash
+# Extract a single RAR file
+filekit unrar archive.rar
+
+# Extract all RAR files in current directory
+filekit unrar .
+
+# Recursively extract all RAR files in a directory and its subdirectories
+filekit unrar /path/to/archives -r
+
+# Extract all RAR files in a specific directory (non-recursive)
+filekit unrar /downloads/
+```
+
+**Requirements:**
+- The `unrar` utility must be installed on your system
+- **macOS**: `brew install unrar`
+- **Ubuntu/Debian**: `sudo apt install unrar`
+- **CentOS/RHEL**: `sudo yum install unrar` or `sudo dnf install unrar`
+
+**unrar behavior:**
+- Extracts files to the same directory as the RAR file
+- Overwrites existing files (uses `-o+` flag)
+- Processes only `.rar` files (case-insensitive)
+- Shows progress for each file being extracted
+- Reports total number of files extracted
+
+**Use cases:**
+- Batch extract downloaded archive collections
+- Process backup archives
+- Extract game or software distributions
+- Automate archive extraction workflows
+
+#### 6. remove-files
+
+Removes files matching a specified pattern from a directory. Shows confirmation before deletion for safety.
+
+```bash
+filekit remove-files <directory> -pattern="*.ext" [-recursive]
+```
+
+**Flags:**
+- `-pattern`: File pattern to match (e.g., '*.rar', '*.tmp', '*.log') (required)
+- `-recursive`: Process directories recursively (optional)
+
+**Arguments:**
+- `directory`: Directory to process (optional, defaults to current directory)
+
+**Examples:**
+```bash
+# Remove all .rar files from current directory
+filekit remove-files . -pattern="*.rar"
+
+# Remove all .tmp files recursively from a directory
+filekit remove-files /path/to/cleanup -pattern="*.tmp" -recursive
+
+# Remove all .log files from current directory (directory argument omitted)
+filekit remove-files -pattern="*.log"
+
+# Remove all backup files with .bak extension recursively
+filekit remove-files /project -pattern="*.bak" -recursive
+```
+
+**remove-files behavior:**
+- Searches for files matching the specified pattern
+- Shows a list of files to be deleted (first 10 files, then count for remaining)
+- Asks for user confirmation before deletion (y/N prompt)
+- Deletes files only after confirmation
+- Reports number of successfully deleted files
+- Shows errors for files that couldn't be deleted
+
+**Safety features:**
+- **Confirmation required**: Always shows what will be deleted and asks for confirmation
+- **Pattern validation**: Validates the pattern syntax before searching
+- **Error reporting**: Reports which files couldn't be deleted and why
+- **Preview mode**: Shows files to be deleted before any action
+
+**Use cases:**
+- Clean up temporary files
+- Remove old log files
+- Delete backup files
+- Clean download directories
+- Remove compilation artifacts
+
 ## Project Structure
 
 ```
@@ -175,7 +274,9 @@ filekit/
 │   ├── replace_in_names.go   # rename-replace command handler
 │   ├── create_rand_files.go  # create-rand-files command handler
 │   ├── folderify.go          # folderify command handler
-│   └── deep_compare.go       # deep-compare command handler
+│   ├── deep_compare.go       # deep-compare command handler
+│   ├── unrar.go              # unrar command handler
+│   └── remove_files.go       # remove-files command handler
 ├── internal/                  # Internal packages (implementation logic)
 │   ├── rename/               # File renaming logic
 │   │   └── rename.go
@@ -183,8 +284,12 @@ filekit/
 │   │   └── generator.go
 │   ├── folderify/           # Folderify logic
 │   │   └── folderify.go
-│   └── compare/             # Directory comparison logic
-│       └── compare.go
+│   ├── compare/             # Directory comparison logic
+│   │   └── compare.go
+│   ├── unrar/               # RAR extraction logic
+│   │   └── unrar.go
+│   └── remover/             # File removal logic
+│       └── remover.go
 ├── go.mod                    # Go module definition
 └── README.md                # This file
 ```
